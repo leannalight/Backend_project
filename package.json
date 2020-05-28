@@ -1,12 +1,13 @@
 {
-  "name": "sprint-13",
+  "name": "sprint-14",
   "version": "1.0.0",
-  "description": "backend project, API REST, node.js, express.js and MongoDB",
+  "description": "backend project, authentication and authorization",
   "main": "app.js",
   "dependencies": {
     "express": "^4.17.1",
     "mongoose": "^5.9.14",
-    "mongoose-validator": "^2.1.0"
+    "mongoose-validator": "^2.1.0",
+    "validator": "^13.0.0"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
