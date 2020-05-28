@@ -1,0 +1,37 @@
+{
+  "name": "sprint-13",
+  "version": "1.0.0",
+  "description": "backend project, API REST, node.js, express.js and MongoDB",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.9.14",
+    "mongoose-validator": "^2.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-react": "^7.19.0",
+    "nodemon": "^2.0.4"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "dev": " npx nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leannalight/sprint-13.git"
+  },
+  "author": "Anna Lee",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leannalight/sprint-13/issues"
+  },
+  "homepage": "https://github.com/leannalight/sprint-13#readme",
+  "keywords": [
+    "backend",
+    "junior",
+    "learning backend"
+  ]
+}
