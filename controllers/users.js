@@ -40,9 +40,9 @@ module.exports.getUserbyId = (req, res) => {
 };
 
 module.exports.createUser = (req, res) => {
-  const { name, about, avatar } = req.body;
+  const { name, about, avatar, email, password } = req.body;
 
-  User.create({ name, about, avatar })
+  User.create({ name, about, avatar, email, password })
     .then((user) => res.send({ data: user }))
     .catch((error) => {
       if (error.name === 'ValidationError') {
@@ -52,5 +52,20 @@ module.exports.createUser = (req, res) => {
         return res.status(400).send({ message: error.message });
       }
       return res.status(500).send({ message: error.message });
+    });
+};
+
+module.exports.login = (req, res) => {
+  const { email, password } = req.body;
+
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      // аунтентификация успешна
+      res.send({
+        token: jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' }),
+      });
+    })
+    .catch((error) => {
+      res.status(401).send({ message: error.message });
     });
 };

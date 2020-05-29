@@ -4,6 +4,7 @@
   "description": "backend project, authentication and authorization",
   "main": "app.js",
   "dependencies": {
+    "bcrypt": "^4.0.1",
     "express": "^4.17.1",
     "mongoose": "^5.9.14",
     "mongoose-validator": "^2.1.0",
