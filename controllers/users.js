@@ -40,8 +40,9 @@ module.exports.getUserbyId = (req, res) => {
 };
 
 module.exports.createUser = (req, res) => {
+  // eslint-disable-next-line object-curly-newline
   const { name, about, avatar, email, password } = req.body;
-
+  // eslint-disable-next-line object-curly-newline
   User.create({ name, about, avatar, email, password })
     .then((user) => res.send({ data: user }))
     .catch((error) => {
