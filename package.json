@@ -24,14 +24,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/leannalight/sprint-13.git"
+    "url": "git+https://github.com/leannalight/Backend_project.git"
   },
   "author": "Anna Lee",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/leannalight/sprint-13/issues"
+    "url": "https://github.com/leannalight/Backend_project/issues"
   },
-  "homepage": "https://github.com/leannalight/sprint-13#readme",
+  "homepage": "https://github.com/leannalight/Backend_project#readme",
   "keywords": [
     "backend",
     "junior",
