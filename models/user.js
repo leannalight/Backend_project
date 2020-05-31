@@ -28,19 +28,20 @@ const userSchema = new mongoose.Schema({
       required: true,
       validate: {
         validator: (email) => usersValidator.isEmail(email),
-        message: 'Неправильный формат почты',
+        message: (props) => `${props.value} is not valid email!`,
       },
     },
     password: {
       type: String,
       required: true,
+      select: false, // необходимо добавить поле select
       minlength: 8,
     },
   },
 });
 // eslint-disable-next-line func-names
 userSchema.statics.findUserByCredentials = function (email, password) {
-  return this.findOne({ email })
+  return this.findOne({ email }).select('+password')
     .then((user) => {
       if (!user) {
         return Promise.reject((new Error('Неправильные почта или пароль')));
