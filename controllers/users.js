@@ -43,10 +43,14 @@ module.exports.getUserbyId = (req, res) => {
 };
 
 module.exports.createUser = (req, res) => {
-  // eslint-disable-next-line object-curly-newline
-  const { name, about, avatar, email, password } = req.body;
-  // eslint-disable-next-line object-curly-newline
-  User.create({ name, about, avatar, email, password })
+  const {
+    name, about, avatar, email, password,
+  } = req.body;
+
+  bcrypt.hash(req.body.password, 10)
+    .then((hash) => User.create({
+      name, about, avatar, email, password: hash,
+    }))
     .then((user) => res.send({ data: user }))
     .catch((error) => {
       if (error.name === 'ValidationError') {
@@ -59,32 +63,18 @@ module.exports.createUser = (req, res) => {
     });
 };
 
-module.exports.register = (req, res) => {
-  bcrypt.hash(req.body.password, 10)
-    .then((hash) => User.create({
-      email: req.body.email,
-      password: hash,
-    }))
-    .then((user) => {
-      res.status(201).send({
-        _id: user._id,
-        email: user.email,
-      });
-    })
-    .catch((error) => {
-      res.status(400).send(error);
-    });
-};
-
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
       // аунтентификация успешна
-      res.send({
-        token: jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' }),
+      const token = jwt.sign({ _id: user._id }, 'key', { expiresIn: '7d' });
+      res.cookie('jwt', token, {
+        maxAge: 3600000 * 24 * 7,
+        httpOnly: true,
       });
+      res.send({ message: 'Авторизация прошла успешно' });
     })
     .catch((error) => {
       res.status(401).send({ message: error.message });
