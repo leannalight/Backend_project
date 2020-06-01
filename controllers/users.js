@@ -44,6 +44,7 @@ module.exports.getUserbyId = (req, res) => {
 
 module.exports.createUser = (req, res) => {
   const {
+    // eslint-disable-next-line no-unused-vars
     name, about, avatar, email, password,
   } = req.body;
 
@@ -69,12 +70,12 @@ module.exports.login = (req, res) => {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       // аунтентификация успешна
-      const token = jwt.sign({ _id: user._id }, 'key', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, 'SECRET_KEY', { expiresIn: '7d' });
       res.cookie('jwt', token, {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
       });
-      res.send({ message: 'Авторизация прошла успешно' });
+      res.send({ token });
     })
     .catch((error) => {
       res.status(401).send({ message: error.message });
