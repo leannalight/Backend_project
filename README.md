@@ -2,9 +2,9 @@
 
 Аутентификация и авторизация в проекте Mesto, sprint-14
 
-## Актуальная версия v0.0.1
+## Актуальная версия v0.0.2
 
-git tag -a v0.0.1 -m "my version v0.0.1"
+git tag -a v0.0.2 -m "my version v0.0.2"
 
 ## Технологии:
 
@@ -15,7 +15,7 @@ git tag -a v0.0.1 -m "my version v0.0.1"
 
 ## Инструкции по установке, настройке и запуску
 
-1. Для клонирования используйте git clone https://github.com/leannalight/sprint-13
+1. Для клонирования используйте git clone https://github.com/leannalight/Backend_project
 2. Используйте npm i для переустановки пакетов.
 3. Используйте npm run dev, чтобы открыть проект на локальном сервере.
 4. Команда npm run start запускает сервер на локальном хосте: 3030;
