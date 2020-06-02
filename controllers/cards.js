@@ -38,13 +38,17 @@ module.exports.createCard = (req, res) => {
 };
 
 module.exports.deleteCardbyId = (req, res) => {
-  Card.findByIdAndRemove(req.params.cardId)
+  const { id } = req.params;
+  Card.findById(id).populate('owner')
     .then((card) => {
       if (!card) {
         res.status(404).send({ message: 'Карточка не найдена' });
-      } else {
-        res.send({ data: card });
       }
+      if (card.owner._id.toString() !== req.user._id) {
+        return res.status(403).send({ message: 'Доступ запрещён' });
+      }
+      return Card.findByIdAndRemove(id)
+        .then(() => res.send({ data: card }));
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
