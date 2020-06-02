@@ -22,23 +22,24 @@ const userSchema = new mongoose.Schema({
       validator: (linkAvatar) => usersValidator.isURL(linkAvatar),
       message: (props) => `${props.value} is not valid avatar link!`,
     },
-    email: {
-      type: String,
-      unique: true,
-      required: true,
-      validate: {
-        validator: (email) => usersValidator.isEmail(email),
-        message: (props) => `${props.value} is not valid email!`,
-      },
-    },
-    password: {
-      type: String,
-      required: true,
-      select: false,
-      minlength: 8,
+  },
+  email: {
+    type: String,
+    unique: true,
+    required: true,
+    validate: {
+      validator: (email) => usersValidator.isEmail(email),
+      message: (props) => `${props.value} is not valid email!`,
     },
   },
+  password: {
+    type: String,
+    required: true,
+    minlength: 8,
+    select: false,
+  },
 });
+
 // eslint-disable-next-line func-names
 userSchema.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email }).select('+password')
