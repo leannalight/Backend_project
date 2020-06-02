@@ -44,11 +44,10 @@ module.exports.getUserbyId = (req, res) => {
 
 module.exports.createUser = (req, res) => {
   const {
-    // eslint-disable-next-line no-unused-vars
     name, about, avatar, email, password,
   } = req.body;
 
-  bcrypt.hash(req.body.password, 10)
+  bcrypt.hash(password, 10)
     .then((hash) => User.create({
       name, about, avatar, email, password: hash,
     }))
@@ -59,6 +58,9 @@ module.exports.createUser = (req, res) => {
       }
       if (error.name === 'CastError') {
         return res.status(400).send({ message: error.message });
+      }
+      if (error.name === 'ParallelSaveError') {
+        return res.status(409).send({ message: error.message });
       }
       return res.status(500).send({ message: error.message });
     });
