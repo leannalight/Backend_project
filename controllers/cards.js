@@ -47,8 +47,8 @@ module.exports.deleteCardbyId = (req, res) => {
       if (card.owner._id.toString() !== req.user._id) {
         return res.status(403).send({ message: 'Доступ запрещён' });
       }
-      return Card.findByIdAndRemove(id)
-        .then(() => res.send({ data: card }));
+      res.send({ data: card });
+      return card.remove();
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
