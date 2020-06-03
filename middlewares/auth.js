@@ -4,23 +4,23 @@ const handleAuthError = (res) => {
   res.status(401).send({ message: 'Необходима авторизация' });
 };
 
-// eslint-disable-next-line consistent-return
 module.exports = (req, res, next) => {
-  const { jwt: token } = req.cookies;
+  const { authorization } = req.headers;
 
-  if (!token) {
+  if (!authorization || !authorization.startsWith('Bearer ')) {
     return handleAuthError(res);
   }
 
+  const token = authorization.replace('Bearer ', '');
   let payload;
-
   try {
-    payload = jwt.verify(token, 'SECRET_KEY');
+    const { SECRET_KEY } = process.env;
+    payload = jwt.verify(token, SECRET_KEY);
   } catch (error) {
     return handleAuthError(res);
   }
 
-  req.user = payload; // записываем пейлоуд в объект запроса
+  req.user = payload;
 
-  next(); // пропускаем запрос дальше
+  return next();
 };

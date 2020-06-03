@@ -1,12 +1,22 @@
 const express = require('express');
+require('dotenv').config();
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-
 const mongoose = require('mongoose');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+});
+
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 
 const app = express();
+app.use(helmet());
+app.use(limiter);
+
 const { PORT = 3030 } = process.env;
 
 const usersRouter = require('./routes/users');
@@ -23,7 +33,6 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   // eslint-disable-next-line no-console
   .catch((error) => console.log(error));
 
-app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
