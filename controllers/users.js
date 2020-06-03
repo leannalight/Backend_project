@@ -67,11 +67,11 @@ module.exports.createUser = (req, res) => {
 
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
-
+  const { SECRET_KEY } = process.env;
   return User.findUserByCredentials(email, password)
     .then((user) => {
       // аунтентификация успешна
-      const token = jwt.sign({ _id: user._id }, 'SECRET_KEY', { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, SECRET_KEY, { expiresIn: '7d' });
       res.cookie('jwt', token, {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
