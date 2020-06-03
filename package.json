@@ -1,6 +1,6 @@
 {
   "name": "backend_project",
-  "version": "v0.0.3",
+  "version": "v0.0.4",
   "description": "backend project, authentication and authorization, sprint-14",
   "main": "app.js",
   "dependencies": {
