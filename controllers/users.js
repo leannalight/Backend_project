@@ -58,8 +58,8 @@ module.exports.createUser = (req, res) => {
       if (error.name === 'CastError') {
         return res.status(400).send({ message: error.message });
       }
-      if (error.name === 'ParallelSaveError') {
-        return res.status(409).send({ message: error.message });
+      if (error.code === '11000' || error.name === 'MongoError') {
+        return res.status(409).send({ message: 'Данный email уже зарегистрирован' });
       }
       return res.status(500).send({ message: error.message });
     });
