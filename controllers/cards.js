@@ -20,7 +20,6 @@ module.exports.getCards = (req, res) => {
     });
 };
 
-
 module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
 
@@ -47,8 +46,8 @@ module.exports.deleteCardbyId = (req, res) => {
       if (card.owner._id.toString() !== req.user._id) {
         return res.status(403).send({ message: 'Доступ запрещён' });
       }
-      res.send({ data: card });
-      return card.remove();
+      return card.remove()
+        .then(() => res.send({ data: card }));
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {

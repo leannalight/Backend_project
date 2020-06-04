@@ -1,6 +1,7 @@
 const express = require('express');
 require('dotenv').config();
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const mongoose = require('mongoose');
@@ -29,6 +30,7 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   // eslint-disable-next-line no-console
   .catch((error) => console.log(error));
 
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
