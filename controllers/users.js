@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
+const { PrivateKey } = require('../config');
 
 module.exports.getUsers = (req, res) => {
   User.find({})
@@ -58,8 +59,9 @@ module.exports.createUser = (req, res) => {
       if (error.name === 'CastError') {
         return res.status(400).send({ message: error.message });
       }
-      if (error.code === '11000' || error.name === 'MongoError') {
-        return res.status(409).send({ message: 'Данный email уже зарегистрирован' });
+      // eslint-disable-next-line eqeqeq
+      if (error.code == '11000' || error.name == 'MongoError') {
+        return res.status(409).send({ message: 'Данный email зарегистрирован' });
       }
       return res.status(500).send({ message: error.message });
     });
@@ -67,11 +69,9 @@ module.exports.createUser = (req, res) => {
 
 module.exports.login = (req, res) => {
   const { email, password } = req.body;
-  const { SECRET_KEY } = process.env;
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      // аунтентификация успешна
-      const token = jwt.sign({ _id: user._id }, SECRET_KEY, { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, PrivateKey, { expiresIn: '7d' });
       res.cookie('jwt', token, {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
