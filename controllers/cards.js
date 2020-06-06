@@ -41,7 +41,7 @@ module.exports.deleteCardbyId = (req, res) => {
   Card.findById(cardId).populate('owner')
     .then((card) => {
       if (!card) {
-        res.status(404).send({ message: 'Карточка не найдена' });
+        return res.status(404).send({ message: 'Карточка не найдена' });
       }
       if (card.owner._id.toString() !== req.user._id) {
         return res.status(403).send({ message: 'Доступ запрещён' });
