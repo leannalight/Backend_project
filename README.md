@@ -4,7 +4,7 @@
 
 ## Актуальная версия v0.0.7
 
-git tag -a v0.0.6 -m "my version v0.0.7"
+git tag -a v0.0.7 -m "my version v0.0.7"
 
 ## Технологии:
 
