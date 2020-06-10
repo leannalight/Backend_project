@@ -1,36 +1,45 @@
 {
-  "name": "sprint-13",
-  "version": "1.0.0",
-  "description": "backend project, API REST, node.js, express.js and MongoDB",
+  "name": "backend_project",
+  "version": "v0.0.8",
+  "description": "backend project, authentication and authorization, sprint-14",
   "main": "app.js",
   "dependencies": {
+    "bcrypt": "^4.0.1",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-rate-limit": "^5.1.3",
+    "helmet": "^3.22.0",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.14",
-    "mongoose-validator": "^2.1.0"
+    "mongoose-validator": "^2.1.0",
+    "validator": "^13.0.0"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-react": "^7.19.0",
     "nodemon": "^2.0.4"
   },
   "scripts": {
     "start": "node app.js",
-    "dev": " npx nodemon app.js"
+    "dev": "npx nodemon app.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/leannalight/sprint-13.git"
+    "url": "git+https://github.com/leannalight/Backend_project.git"
   },
   "author": "Anna Lee",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/leannalight/sprint-13/issues"
+    "url": "https://github.com/leannalight/Backend_project/issues"
   },
-  "homepage": "https://github.com/leannalight/sprint-13#readme",
+  "homepage": "https://github.com/leannalight/Backend_project#readme",
   "keywords": [
     "backend",
+    "authentication",
+    "authorization",
     "junior",
     "learning backend"
   ]

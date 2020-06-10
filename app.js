@@ -1,10 +1,21 @@
 const express = require('express');
+require('dotenv').config();
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 
 const app = express();
-const { PORT = 3030 } = process.env;
+const mongoose = require('mongoose');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const { createUser, login } = require('./controllers/users');
 
+const { PORT = 3030 } = process.env;
+const auth = require('./middlewares/auth');
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+});
 const usersRouter = require('./routes/users');
 const cardsRouter = require('./routes/cards');
 
@@ -19,17 +30,19 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
   // eslint-disable-next-line no-console
   .catch((error) => console.log(error));
 
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(helmet());
+app.use(limiter);
 
-app.use((req, res, next) => {
-  req.user = {
-    _id: '5ec6a15e74cf5e26e0eff4f7', // вставьте сюда _id созданного в предыдущем пункте пользователя
-  };
+// роуты не требующие авторизации (регистрация и логин)
+app.post('/signup', createUser);
+app.post('/signin', login);
 
-  next();
-});
-
+// авторизация
+app.use(auth);
+// роуты, которым авторизация нужна
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
 

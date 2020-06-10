@@ -20,7 +20,6 @@ module.exports.getCards = (req, res) => {
     });
 };
 
-
 module.exports.createCard = (req, res) => {
   const { name, link } = req.body;
 
@@ -38,13 +37,17 @@ module.exports.createCard = (req, res) => {
 };
 
 module.exports.deleteCardbyId = (req, res) => {
-  Card.findByIdAndRemove(req.params.cardId)
+  const { cardId } = req.params;
+  Card.findById(cardId).populate('owner')
     .then((card) => {
       if (!card) {
-        res.status(404).send({ message: 'Карточка не найдена' });
-      } else {
-        res.send({ data: card });
+        return res.status(404).send({ message: 'Карточка не найдена' });
       }
+      if (card.owner._id.toString() !== req.user._id) {
+        return res.status(403).send({ message: 'Доступ запрещён' });
+      }
+      return card.remove()
+        .then(() => res.send({ data: card }));
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {

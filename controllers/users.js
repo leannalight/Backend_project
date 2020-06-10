@@ -1,4 +1,7 @@
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const User = require('../models/user');
+const { PrivateKey } = require('../config');
 
 module.exports.getUsers = (req, res) => {
   User.find({})
@@ -40,10 +43,15 @@ module.exports.getUserbyId = (req, res) => {
 };
 
 module.exports.createUser = (req, res) => {
-  const { name, about, avatar } = req.body;
+  const {
+    name, about, avatar, email, password,
+  } = req.body;
 
-  User.create({ name, about, avatar })
-    .then((user) => res.send({ data: user }))
+  bcrypt.hash(password, 10)
+    .then((hash) => User.create({
+      name, about, avatar, email, password: hash,
+    }))
+    .then((user) => res.send({ data: user.omitPrivate() }))
     .catch((error) => {
       if (error.name === 'ValidationError') {
         return res.status(400).send({ message: error.message });
@@ -51,6 +59,27 @@ module.exports.createUser = (req, res) => {
       if (error.name === 'CastError') {
         return res.status(400).send({ message: error.message });
       }
+      // eslint-disable-next-line eqeqeq
+      if (error.code == '11000' || error.name == 'MongoError') {
+        return res.status(409).send({ message: 'Данный email зарегистрирован' });
+      }
       return res.status(500).send({ message: error.message });
+    });
+};
+
+module.exports.login = (req, res) => {
+  const { email, password } = req.body;
+
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, PrivateKey, { expiresIn: '7d' });
+      res.cookie('jwt', token, {
+        maxAge: 3600000 * 24 * 7,
+        httpOnly: true,
+      });
+      res.send({ token });
+    })
+    .catch((error) => {
+      res.status(401).send({ message: error.message });
     });
 };
