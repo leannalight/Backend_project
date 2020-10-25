@@ -30,7 +30,7 @@
     "type": "git",
     "url": "git+https://github.com/leannalight/Backend_project.git"
   },
-  "author": "Anna Lee",
+  "author": "Anna Lee <annikkacloud@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/leannalight/Backend_project/issues"
